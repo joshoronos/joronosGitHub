@@ -3,8 +3,8 @@
       <div class="container">
         <div class="w3-bar w3-border w3-light-grey">
           <a href="#" v-if="userRole == 1" v-on:click="showCreate()" class="w3-bar-item w3-button w3-hover-green">Create Product/Brand</a>
-          <a href="#" v-if="userRole == 1" v-on:click="showProduct()" class="w3-bar-item w3-button w3-hover-green">Product Table</a>
-          <a href="#" v-on:click="showPurchase()"  class="w3-bar-item w3-button w3-hover-green">Purchase Order</a>
+          <a href="#" v-on:click="showProduct()" class="w3-bar-item w3-button w3-hover-green">Product</a>
+          <a href="#" v-if="userRole == 1" v-on:click="showPurchase()"  class="w3-bar-item w3-button w3-hover-green">Purchase Order</a>
         </div>
       </div>
       <v-container v-if="createDiv">
@@ -155,7 +155,6 @@
     mounted () {
       
         this.viewAllProduct();
-        console.log(this.createDiv);
         
     },
 
@@ -169,10 +168,13 @@
         },
 
         editDetails(resp) {
+  
           this.id = resp.id
           this.productname = resp.name
           this.quantity = resp.quantity
           this.brandCB = resp.brand_id
+
+          
         },
 
         deleteItem(resp) {
