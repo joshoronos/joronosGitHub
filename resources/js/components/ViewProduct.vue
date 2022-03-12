@@ -1,9 +1,18 @@
 <template>
     <v-app>
-      <v-row v-if="userRole == 1">
+      <div class="container">
+        <div class="w3-bar w3-border w3-light-grey">
+          <a href="#" v-if="userRole == 1" v-on:click="showCreate()" class="w3-bar-item w3-button w3-hover-green">Create Product/Brand</a>
+          <a href="#" v-if="userRole == 1" v-on:click="showProduct()" class="w3-bar-item w3-button w3-hover-green">Product Table</a>
+          <a href="#" v-on:click="showPurchase()"  class="w3-bar-item w3-button w3-hover-green">Purchase Order</a>
+        </div>
+      </div>
+      <v-container v-if="createDiv">
+        <v-row v-if="userRole == 1">
         <pharagraph-component :Vid="id" :VproductName="productname" :VbrandCB="brandCB" :Vquantity="quantity"></pharagraph-component>
-        <purchaseOrder-component></purchaseOrder-component>
-      </v-row>
+        </v-row>
+      </v-container>
+     <v-container v-if="productDiv">
       <v-row>
         <v-data-table
             :headers="headers"
@@ -19,14 +28,15 @@
             <v-item-group v-if="userRole == 1">
               <v-icon color="primary" @click="editDetails(item)" class="btn btn-xsmall">fas fa-edit</v-icon>
               <v-icon color="error" @click="deleteItem(item)" class="btn btn-xsmall">fas fa-trash-can</v-icon>
-            </v-item-group>
-          
+            </v-item-group> 
         </template>
         </v-data-table>
       </v-row>
+      </v-container>
 
-     
-
+      <v-container v-if="purchaseDiv">
+        <purchaseOrder-component></purchaseOrder-component>
+      </v-container>
 
       <v-row justify="center">
         <v-dialog
@@ -101,6 +111,8 @@
     </v-app>
 </template>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
 <script>
   export default {
     data () {
@@ -131,15 +143,19 @@
         modalBrandName:'',
 
         showModal:false,
-
+        createDiv:false,
+        productDiv:false,
+        purchaseDiv:false
+    
         
       }
 
     },
 
     mounted () {
+      
         this.viewAllProduct();
-
+        console.log(this.createDiv);
         
     },
 
@@ -178,6 +194,24 @@
         showDialog(val){
              this.showModal = val;
         
+        },
+
+        showCreate() {
+          this.createDiv = true;
+          this.productDiv = false;
+          this.purchaseDiv = false;
+        },
+
+        showProduct() {
+          this.productDiv = true;
+          this.createDiv = false;
+          this.purchaseDiv = false;
+        },
+
+        showPurchase() {
+          this.purchaseDiv = true;
+          this.createDiv = false;
+          this.productDiv = false;
         },
 
         savePurchaseOrder(){
