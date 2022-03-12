@@ -5886,7 +5886,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.viewAllProduct();
-    console.log(this.createDiv);
   },
   methods: {
     viewAllProduct: function viewAllProduct() {
@@ -30076,6 +30075,20 @@ var render = function () {
               )
             : _vm._e(),
           _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "w3-bar-item w3-button w3-hover-green",
+              attrs: { href: "#" },
+              on: {
+                click: function ($event) {
+                  return _vm.showProduct()
+                },
+              },
+            },
+            [_vm._v("Product")]
+          ),
+          _vm._v(" "),
           _vm.userRole == 1
             ? _c(
                 "a",
@@ -30084,27 +30097,13 @@ var render = function () {
                   attrs: { href: "#" },
                   on: {
                     click: function ($event) {
-                      return _vm.showProduct()
+                      return _vm.showPurchase()
                     },
                   },
                 },
-                [_vm._v("Product Table")]
+                [_vm._v("Purchase Order")]
               )
             : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "w3-bar-item w3-button w3-hover-green",
-              attrs: { href: "#" },
-              on: {
-                click: function ($event) {
-                  return _vm.showPurchase()
-                },
-              },
-            },
-            [_vm._v("Purchase Order")]
-          ),
         ]),
       ]),
       _vm._v(" "),
