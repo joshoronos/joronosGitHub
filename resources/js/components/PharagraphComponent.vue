@@ -25,6 +25,8 @@
             <v-row>       
             </v-row>
         </v-row>
+        </v-container>
+      <v-container>
         <v-row>
             <h1>Product Details</h1>
             <v-col cols="12" sm="6" md="3">
@@ -68,12 +70,14 @@ export default {
             brandDetails:'',
 
             brandCB: '',
-            brandList: []
+            brandList: [],
+
+
         }
     },
-
     mounted() {
         console.log("pogi ako.");
+        console.log(this.createDiv);
         this.showBrandNames();
         
     },

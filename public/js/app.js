@@ -5520,6 +5520,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['Vid', 'VproductName', 'VbrandCB', 'Vquantity'],
   data: function data() {
@@ -5536,6 +5538,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     console.log("pogi ako.");
+    console.log(this.createDiv);
     this.showBrandNames();
   },
   methods: {
@@ -5833,6 +5836,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5863,11 +5878,15 @@ __webpack_require__.r(__webpack_exports__);
       modalProductName: '',
       modalProductQuantity: '',
       modalBrandName: '',
-      showModal: false
+      showModal: false,
+      createDiv: false,
+      productDiv: false,
+      purchaseDiv: false
     };
   },
   mounted: function mounted() {
     this.viewAllProduct();
+    console.log(this.createDiv);
   },
   methods: {
     viewAllProduct: function viewAllProduct() {
@@ -5903,6 +5922,21 @@ __webpack_require__.r(__webpack_exports__);
     },
     showDialog: function showDialog(val) {
       this.showModal = val;
+    },
+    showCreate: function showCreate() {
+      this.createDiv = true;
+      this.productDiv = false;
+      this.purchaseDiv = false;
+    },
+    showProduct: function showProduct() {
+      this.productDiv = true;
+      this.createDiv = false;
+      this.purchaseDiv = false;
+    },
+    showPurchase: function showPurchase() {
+      this.purchaseDiv = true;
+      this.createDiv = false;
+      this.productDiv = false;
     },
     savePurchaseOrder: function savePurchaseOrder() {
       axios.post("/purchaseOrder", {
@@ -29756,7 +29790,13 @@ var render = function () {
                 ],
                 1
               ),
-              _vm._v(" "),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-container",
+            [
               _c(
                 "v-row",
                 [
@@ -30018,112 +30058,180 @@ var render = function () {
   return _c(
     "v-app",
     [
-      _vm.userRole == 1
-        ? _c(
-            "v-row",
-            [
-              _c("pharagraph-component", {
-                attrs: {
-                  Vid: _vm.id,
-                  VproductName: _vm.productname,
-                  VbrandCB: _vm.brandCB,
-                  Vquantity: _vm.quantity,
+      _c("div", { staticClass: "container" }, [
+        _c("div", { staticClass: "w3-bar w3-border w3-light-grey" }, [
+          _vm.userRole == 1
+            ? _c(
+                "a",
+                {
+                  staticClass: "w3-bar-item w3-button w3-hover-green",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.showCreate()
+                    },
+                  },
                 },
-              }),
-              _vm._v(" "),
-              _c("purchaseOrder-component"),
+                [_vm._v("Create Product/Brand")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.userRole == 1
+            ? _c(
+                "a",
+                {
+                  staticClass: "w3-bar-item w3-button w3-hover-green",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.showProduct()
+                    },
+                  },
+                },
+                [_vm._v("Product Table")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "w3-bar-item w3-button w3-hover-green",
+              attrs: { href: "#" },
+              on: {
+                click: function ($event) {
+                  return _vm.showPurchase()
+                },
+              },
+            },
+            [_vm._v("Purchase Order")]
+          ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _vm.createDiv
+        ? _c(
+            "v-container",
+            [
+              _vm.userRole == 1
+                ? _c(
+                    "v-row",
+                    [
+                      _c("pharagraph-component", {
+                        attrs: {
+                          Vid: _vm.id,
+                          VproductName: _vm.productname,
+                          VbrandCB: _vm.brandCB,
+                          Vquantity: _vm.quantity,
+                        },
+                      }),
+                    ],
+                    1
+                  )
+                : _vm._e(),
             ],
             1
           )
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "v-row",
-        [
-          _c("v-data-table", {
-            staticClass: "elevation-1",
-            attrs: {
-              headers: _vm.headers,
-              items: _vm.handler,
-              "items-per-page": 5,
-              "hide-default-footer": true,
-            },
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "item.action",
-                  fn: function (ref) {
-                    var item = ref.item
-                    return [
-                      _vm.userRole == 2
-                        ? _c(
-                            "v-item-group",
-                            [
-                              _c(
-                                "v-icon",
-                                {
-                                  staticClass: "btn btn-xsmall",
-                                  attrs: { color: "success" },
-                                  on: {
-                                    click: function ($event) {
-                                      _vm.showDialog(true)
-                                      _vm.getDetails(item)
-                                    },
-                                  },
-                                },
-                                [_vm._v("fa fa-cart-plus")]
-                              ),
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.userRole == 1
-                        ? _c(
-                            "v-item-group",
-                            [
-                              _c(
-                                "v-icon",
-                                {
-                                  staticClass: "btn btn-xsmall",
-                                  attrs: { color: "primary" },
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.editDetails(item)
-                                    },
-                                  },
-                                },
-                                [_vm._v("fas fa-edit")]
-                              ),
+      _vm.productDiv
+        ? _c(
+            "v-container",
+            [
+              _c(
+                "v-row",
+                [
+                  _c("v-data-table", {
+                    staticClass: "elevation-1",
+                    attrs: {
+                      headers: _vm.headers,
+                      items: _vm.handler,
+                      "items-per-page": 5,
+                      "hide-default-footer": true,
+                    },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "item.action",
+                          fn: function (ref) {
+                            var item = ref.item
+                            return [
+                              _vm.userRole == 2
+                                ? _c(
+                                    "v-item-group",
+                                    [
+                                      _c(
+                                        "v-icon",
+                                        {
+                                          staticClass: "btn btn-xsmall",
+                                          attrs: { color: "success" },
+                                          on: {
+                                            click: function ($event) {
+                                              _vm.showDialog(true)
+                                              _vm.getDetails(item)
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("fa fa-cart-plus")]
+                                      ),
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
                               _vm._v(" "),
-                              _c(
-                                "v-icon",
-                                {
-                                  staticClass: "btn btn-xsmall",
-                                  attrs: { color: "error" },
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.deleteItem(item)
-                                    },
-                                  },
-                                },
-                                [_vm._v("fas fa-trash-can")]
-                              ),
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                    ]
-                  },
-                },
-              ],
-              null,
-              true
-            ),
-          }),
-        ],
-        1
-      ),
+                              _vm.userRole == 1
+                                ? _c(
+                                    "v-item-group",
+                                    [
+                                      _c(
+                                        "v-icon",
+                                        {
+                                          staticClass: "btn btn-xsmall",
+                                          attrs: { color: "primary" },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.editDetails(item)
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("fas fa-edit")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-icon",
+                                        {
+                                          staticClass: "btn btn-xsmall",
+                                          attrs: { color: "error" },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.deleteItem(item)
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("fas fa-trash-can")]
+                                      ),
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
+                            ]
+                          },
+                        },
+                      ],
+                      null,
+                      true
+                    ),
+                  }),
+                ],
+                1
+              ),
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.purchaseDiv
+        ? _c("v-container", [_c("purchaseOrder-component")], 1)
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "v-row",
