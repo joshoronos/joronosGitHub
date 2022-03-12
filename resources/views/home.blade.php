@@ -8,6 +8,4 @@
     <view-component></view-component>
 
 </div>
-    
-    
 @endsection
