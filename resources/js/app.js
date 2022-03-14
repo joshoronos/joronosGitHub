@@ -36,7 +36,9 @@ Vue.component('purchaseOrder-component', require('./components/PurchaseOrderComp
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
+
 const app = new Vue({
     vuetify: vuetify,
-    el: '#app'
+    el: '#app',
 });

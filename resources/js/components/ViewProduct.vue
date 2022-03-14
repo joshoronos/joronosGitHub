@@ -1,5 +1,6 @@
 <template>
     <v-app>
+
       <div class="container">
         <div class="w3-bar w3-border w3-light-grey">
           <a href="#" v-if="userRole == 1" v-on:click="showCreate()" class="w3-bar-item w3-button w3-hover-green">Create Product/Brand</a>
@@ -7,12 +8,14 @@
           <a href="#" v-if="userRole == 1" v-on:click="showPurchase()"  class="w3-bar-item w3-button w3-hover-green">Purchase Order</a>
         </div>
       </div>
+
       <v-container v-if="createDiv">
         <v-row v-if="userRole == 1">
-        <pharagraph-component :Vid="id" :VproductName="productname" :VbrandCB="brandCB" :Vquantity="quantity" :Vsbtn="saveBtn"></pharagraph-component>
+          <pharagraph-component :Vid="id" :VproductName="productname" :VbrandCB="brandCB" :Vquantity="quantity" :Vsbtn="saveBtn"></pharagraph-component>
         </v-row>
       </v-container>
-     <v-container v-if="productDiv">
+
+    <v-container v-if="productDiv">
       <v-row>
         <v-data-table
             :headers="headers"
@@ -23,16 +26,22 @@
         >
         <template v-slot:[`item.action`]="{ item }">
             <v-item-group v-if="userRole == 2">
-            <v-icon @click="showDialog(true); getDetails(item)" color="success" class="btn btn-xsmall">fa fa-cart-plus</v-icon>
+              <v-btn icon color="success">
+                <v-icon small @click="showDialog(true); getDetails(item)" color="success" class="btn btn-xsmall">fa fa-cart-plus</v-icon>
+              </v-btn>
             </v-item-group>           
             <v-item-group v-if="userRole == 1">
-              <v-icon color="primary" @click="editDetails(item)" class="btn btn-xsmall">fas fa-edit</v-icon>
-              <v-icon color="error" @click="deleteItem(item)" class="btn btn-xsmall">fas fa-trash-can</v-icon>
+              <v-btn icon color="primary">
+                <v-icon small @click="editDetails(item)" class="btn btn-xsmall">fas fa-edit</v-icon>
+              </v-btn>
+              <v-btn icon color="error">
+                <v-icon small @click="deleteItem(item)" class="btn btn-xsmall">fas fa-trash-can</v-icon>
+              </v-btn>
             </v-item-group> 
         </template>
         </v-data-table>
       </v-row>
-      </v-container>
+    </v-container>
 
       <v-container v-if="purchaseDiv">
         <purchaseOrder-component></purchaseOrder-component>
@@ -158,7 +167,6 @@
     },
 
     mounted () {
-      
         this.viewAllProduct();
     },
 
