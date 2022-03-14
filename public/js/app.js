@@ -5451,9 +5451,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  data: function data() {
+    return {
+      drawer: false,
+      group: null
+    };
   }
 });
 
@@ -5672,7 +5705,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5746,6 +5778,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -29650,32 +29691,98 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component"),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
+  return _c(
+    "v-card",
+    { staticClass: "mx-auto overflow-hidden", attrs: { height: "400" } },
+    [
+      _c(
+        "v-app-bar",
+        { attrs: { color: "deep-purple", dark: "" } },
+        [
+          _c("v-app-bar-nav-icon", {
+            on: {
+              click: function ($event) {
+                _vm.drawer = true
+              },
+            },
+          }),
+          _vm._v(" "),
+          _c("v-toolbar-title", [_vm._v("Title")]),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-navigation-drawer",
+        {
+          attrs: { absolute: "", temporary: "" },
+          model: {
+            value: _vm.drawer,
+            callback: function ($$v) {
+              _vm.drawer = $$v
+            },
+            expression: "drawer",
+          },
+        },
+        [
+          _c(
+            "v-list",
+            { attrs: { nav: "", dense: "" } },
+            [
+              _c(
+                "v-list-item-group",
+                {
+                  attrs: { "active-class": "deep-purple--text text--accent-4" },
+                  model: {
+                    value: _vm.group,
+                    callback: function ($$v) {
+                      _vm.group = $$v
+                    },
+                    expression: "group",
+                  },
+                },
+                [
+                  _c(
+                    "v-list-item",
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-home")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-item-title", [_vm._v("Home")]),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-account")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-item-title", [_vm._v("Account")]),
+                    ],
+                    1
+                  ),
+                ],
+                1
               ),
-            ]),
-          ]),
-        ]),
-      ]),
-    ])
-  },
-]
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -29852,50 +29959,61 @@ var render = function () {
               _c(
                 "v-row",
                 [
-                  _c("v-col", { attrs: { cols: "12", sm: "4", md: "6" } }, [
-                    _vm.saveBtn
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary",
-                            on: {
-                              click: function ($event) {
-                                return _vm.saveProduct()
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "4", md: "6" } },
+                    [
+                      _vm.saveBtn
+                        ? _c(
+                            "v-btn",
+                            {
+                              attrs: { depressed: "", color: "primary" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.saveProduct()
+                                },
                               },
                             },
-                          },
-                          [_vm._v("Save")]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success",
-                        on: {
-                          click: function ($event) {
-                            return _vm.editProduct()
+                            [_vm._v("Save")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { depressed: "", color: "success" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.editProduct()
+                            },
                           },
                         },
-                      },
-                      [_vm._v("Edit")]
-                    ),
-                  ]),
+                        [_vm._v("Edit")]
+                      ),
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
-                  _c("v-col", { attrs: { cols: "12", sm: "4", md: "6" } }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: {
-                          click: function ($event) {
-                            return _vm.saveProductDetails()
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "4", md: "6" } },
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { depressed: "", color: "primary" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.saveProductDetails()
+                            },
                           },
                         },
-                      },
-                      [_vm._v("Save")]
-                    ),
-                  ]),
+                        [_vm._v("Save")]
+                      ),
+                    ],
+                    1
+                  ),
                 ],
                 1
               ),
@@ -29955,12 +30073,13 @@ var render = function () {
                     return [
                       _c(
                         "v-btn",
+                        { attrs: { icon: "", color: "success" } },
                         [
                           _c(
                             "v-icon",
                             {
                               staticClass: "btn btn-xsmall",
-                              attrs: { color: "success" },
+                              attrs: { small: "" },
                               on: {
                                 click: function ($event) {
                                   _vm.modalApprove(true)
@@ -30189,18 +30308,30 @@ var render = function () {
                                     "v-item-group",
                                     [
                                       _c(
-                                        "v-icon",
+                                        "v-btn",
                                         {
-                                          staticClass: "btn btn-xsmall",
-                                          attrs: { color: "success" },
-                                          on: {
-                                            click: function ($event) {
-                                              _vm.showDialog(true)
-                                              _vm.getDetails(item)
-                                            },
-                                          },
+                                          attrs: { icon: "", color: "success" },
                                         },
-                                        [_vm._v("fa fa-cart-plus")]
+                                        [
+                                          _c(
+                                            "v-icon",
+                                            {
+                                              staticClass: "btn btn-xsmall",
+                                              attrs: {
+                                                small: "",
+                                                color: "success",
+                                              },
+                                              on: {
+                                                click: function ($event) {
+                                                  _vm.showDialog(true)
+                                                  _vm.getDetails(item)
+                                                },
+                                              },
+                                            },
+                                            [_vm._v("fa fa-cart-plus")]
+                                          ),
+                                        ],
+                                        1
                                       ),
                                     ],
                                     1
@@ -30212,31 +30343,47 @@ var render = function () {
                                     "v-item-group",
                                     [
                                       _c(
-                                        "v-icon",
+                                        "v-btn",
                                         {
-                                          staticClass: "btn btn-xsmall",
-                                          attrs: { color: "primary" },
-                                          on: {
-                                            click: function ($event) {
-                                              return _vm.editDetails(item)
-                                            },
-                                          },
+                                          attrs: { icon: "", color: "primary" },
                                         },
-                                        [_vm._v("fas fa-edit")]
+                                        [
+                                          _c(
+                                            "v-icon",
+                                            {
+                                              staticClass: "btn btn-xsmall",
+                                              attrs: { small: "" },
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.editDetails(item)
+                                                },
+                                              },
+                                            },
+                                            [_vm._v("fas fa-edit")]
+                                          ),
+                                        ],
+                                        1
                                       ),
                                       _vm._v(" "),
                                       _c(
-                                        "v-icon",
-                                        {
-                                          staticClass: "btn btn-xsmall",
-                                          attrs: { color: "error" },
-                                          on: {
-                                            click: function ($event) {
-                                              return _vm.deleteItem(item)
+                                        "v-btn",
+                                        { attrs: { icon: "", color: "error" } },
+                                        [
+                                          _c(
+                                            "v-icon",
+                                            {
+                                              staticClass: "btn btn-xsmall",
+                                              attrs: { small: "" },
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.deleteItem(item)
+                                                },
+                                              },
                                             },
-                                          },
-                                        },
-                                        [_vm._v("fas fa-trash-can")]
+                                            [_vm._v("fas fa-trash-can")]
+                                          ),
+                                        ],
+                                        1
                                       ),
                                     ],
                                     1

@@ -39,8 +39,6 @@ class HomeController extends Controller
                     ->where('products.quantity', '>=', '0')
                     ->get();
 
-        
-
         return response()->json([
             'product'   => $product,
             'userType' => User::find(\Auth::id())->role,
@@ -97,7 +95,6 @@ class HomeController extends Controller
     public function edit(Request $request)
     {
 
-        \Log::info($request);
         if($request['id'] == null){
             return 'Select item first to Edit';
         }
@@ -125,7 +122,6 @@ class HomeController extends Controller
     {
         $po = new PurchaseOrder();
         $product = Product::find($request['product_id']);
-        \Log::info($request);
 
         if ($request['quantity_order'] > $product->quantity) {
 

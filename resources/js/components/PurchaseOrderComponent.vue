@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-row>
+      <v-row>
         <v-data-table
             :headers="headers"
             :items="handler"
@@ -8,47 +8,46 @@
             :hide-default-footer="true"
             class="elevation-1"
         >
-        <template v-slot:[`item.action`]="{ item }">
-        <v-btn>
-            <v-icon @click="modalApprove(true); getData(item)" color="success" class="btn btn-xsmall">fa fa-check-square</v-icon>
-        </v-btn>
-          
-        </template>
+          <template v-slot:[`item.action`]="{ item }">
+            <v-btn icon color="success">
+                <v-icon small @click="modalApprove(true); getData(item)" class="btn btn-xsmall">fa fa-check-square</v-icon>
+            </v-btn>       
+          </template>
         </v-data-table>
       </v-row>
 
-<v-row justify="center">
-    <v-dialog
-      v-model="approveDialog"
-      persistent
-      max-width="290"
-    >
-      <v-card>
-        <v-card-title class="text-h5">
-          Do you want to approve this transaction?
-        </v-card-title>
-        <v-card-text></v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="approveDialog=false"
-          >
-            No
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="approvePurchaseOrder(); approveDialog = false"
-          >
-            Yes
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
-    </v-app>
+    <v-row justify="center">
+      <v-dialog
+        v-model="approveDialog"
+        persistent
+        max-width="290"
+      >
+        <v-card>
+          <v-card-title class="text-h5">
+            Do you want to approve this transaction?
+          </v-card-title>
+          <v-card-text></v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="approveDialog=false"
+            >
+              No
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="approvePurchaseOrder(); approveDialog = false"
+            >
+              Yes
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+  </v-app>
 </template>
 
 
