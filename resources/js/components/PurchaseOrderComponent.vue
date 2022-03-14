@@ -72,7 +72,6 @@
 
         approveDialog:false,
 
-
         itemHandler:[]
 
       }
@@ -80,14 +79,12 @@
 
     mounted () {
         this.showPurchaseOrder();
-        //console.log(this.checkStatus);
     },
 
     methods: {
         showPurchaseOrder() {
             axios.get("/showPurchaseOrder").then((response) => {
                 this.handler = response.data;
-                //this.checkStatus = response.data.status;
             });
         },
 

@@ -5519,11 +5519,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['Vid', 'VproductName', 'VbrandCB', 'Vquantity'],
+  props: ['Vid', 'VproductName', 'VbrandCB', 'Vquantity', 'Vsbtn', 'Vebtn'],
   data: function data() {
     return {
       id: '',
@@ -5533,13 +5530,17 @@ __webpack_require__.r(__webpack_exports__);
       brandName: '',
       brandDetails: '',
       brandCB: '',
-      brandList: []
+      brandList: [],
+      saveBtn: true
     };
   },
   mounted: function mounted() {
-    console.log("pogi ako.");
-    console.log(this.createDiv);
     this.showBrandNames();
+    this.id = this.Vid;
+    this.productName = this.VproductName;
+    this.brandCB = this.VbrandCB;
+    this.quantity = this.Vquantity;
+    this.saveBtn = this.Vsbtn;
   },
   methods: {
     saveProduct: function saveProduct() {
@@ -5560,6 +5561,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     editProduct: function editProduct() {
+      var _this = this;
+
       axios.post("/editProduct", {
         id: this.id,
         prodName: this.productName,
@@ -5567,13 +5570,17 @@ __webpack_require__.r(__webpack_exports__);
         quantity: this.quantity
       }).then(function (response) {
         alert(response.data);
+        _this.saveBtn = true;
+        _this.productName = '';
+        _this.quantity = '';
+        _this.brandCB = 0;
       });
     },
     showBrandNames: function showBrandNames() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/getBrandDetails").then(function (response) {
-        _this.brandList = response.data;
+        _this2.brandList = response.data;
       });
     }
   },
@@ -5589,6 +5596,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     Vquantity: function Vquantity(val) {
       this.quantity = val;
+    },
+    Vsbtn: function Vsbtn(val) {
+      this.saveBtn = val;
+    },
+    Vebtn: function Vebtn(val) {
+      this.editBtn = val;
     }
   }
 });
@@ -5687,14 +5700,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.showPurchaseOrder(); //console.log(this.checkStatus);
+    this.showPurchaseOrder();
   },
   methods: {
     showPurchaseOrder: function showPurchaseOrder() {
       var _this = this;
 
       axios.get("/showPurchaseOrder").then(function (response) {
-        _this.handler = response.data; //this.checkStatus = response.data.status;
+        _this.handler = response.data;
       });
     },
     modalApprove: function modalApprove(val) {
@@ -5875,9 +5888,13 @@ __webpack_require__.r(__webpack_exports__);
       brandCB: '',
       userRole: '',
       userName: '',
+      itemHandler: [],
       modalProductName: '',
       modalProductQuantity: '',
       modalBrandName: '',
+      saveBtn: true,
+      editBtn: true,
+      checking: false,
       showModal: false,
       createDiv: false,
       productDiv: false,
@@ -5898,10 +5915,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     editDetails: function editDetails(resp) {
+      this.itemHandler = resp;
       this.id = resp.id;
       this.productname = resp.name;
       this.quantity = resp.quantity;
       this.brandCB = resp.brand_id;
+      this.saveBtn = false;
     },
     deleteItem: function deleteItem(resp) {
       var _this2 = this;
@@ -5923,6 +5942,7 @@ __webpack_require__.r(__webpack_exports__);
       this.showModal = val;
     },
     showCreate: function showCreate() {
+      this.editBtn = false;
       this.createDiv = true;
       this.productDiv = false;
       this.purchaseDiv = false;
@@ -5931,6 +5951,7 @@ __webpack_require__.r(__webpack_exports__);
       this.productDiv = true;
       this.createDiv = false;
       this.purchaseDiv = false;
+      this.viewAllProduct();
     },
     showPurchase: function showPurchase() {
       this.purchaseDiv = true;
@@ -29689,11 +29710,23 @@ var render = function () {
               _c(
                 "v-row",
                 [
-                  _c("h1", [_vm._v("Product Name")]),
+                  _c(
+                    "v-row",
+                    [
+                      _c("v-col", { attrs: { cols: "12", sm: "6", md: "6" } }, [
+                        _c("h1", [_vm._v("Create Product")]),
+                      ]),
+                      _vm._v(" "),
+                      _c("v-col", { attrs: { cols: "12", sm: "6", md: "6" } }, [
+                        _c("h1", [_vm._v("Create Brand")]),
+                      ]),
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: "12", sm: "6", md: "2" } },
+                    { attrs: { cols: "12", sm: "6", md: "6" } },
                     [
                       _c("v-text-field", {
                         attrs: {
@@ -29715,7 +29748,35 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: "12", sm: "6", md: "2" } },
+                    { attrs: { cols: "12", sm: "6", md: "6" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "Brand Name",
+                          placeholder: "Brand Name",
+                          solo: "",
+                        },
+                        model: {
+                          value: _vm.brandName,
+                          callback: function ($$v) {
+                            _vm.brandName = $$v
+                          },
+                          expression: "brandName",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                [
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "6", md: "6" } },
                     [
                       _c("v-text-field", {
                         attrs: {
@@ -29737,95 +29798,7 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: "12", sm: "6", md: "2" } },
-                    [
-                      _c("v-select", {
-                        attrs: {
-                          items: _vm.brandList,
-                          "item-text": "brandName",
-                          "item-value": "id",
-                        },
-                        model: {
-                          value: _vm.brandCB,
-                          callback: function ($$v) {
-                            _vm.brandCB = $$v
-                          },
-                          expression: "brandCB",
-                        },
-                      }),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("v-col", { attrs: { cols: "12", sm: "4", md: "4" } }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: {
-                          click: function ($event) {
-                            return _vm.saveProduct()
-                          },
-                        },
-                      },
-                      [_vm._v("Save")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success",
-                        on: {
-                          click: function ($event) {
-                            return _vm.editProduct()
-                          },
-                        },
-                      },
-                      [_vm._v("Edit")]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("v-row"),
-                ],
-                1
-              ),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-container",
-            [
-              _c(
-                "v-row",
-                [
-                  _c("h1", [_vm._v("Product Details")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-col",
-                    { attrs: { cols: "12", sm: "6", md: "3" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: {
-                          label: "Brand Name",
-                          placeholder: "Brand Name",
-                          solo: "",
-                        },
-                        model: {
-                          value: _vm.brandName,
-                          callback: function ($$v) {
-                            _vm.brandName = $$v
-                          },
-                          expression: "brandName",
-                        },
-                      }),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-col",
-                    { attrs: { cols: "12", sm: "6", md: "3" } },
+                    { attrs: { cols: "12", sm: "6", md: "6" } },
                     [
                       _c("v-text-field", {
                         attrs: {
@@ -29844,10 +29817,72 @@ var render = function () {
                     ],
                     1
                   ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                [
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "6", md: "6" } },
+                    [
+                      _c("v-select", {
+                        attrs: {
+                          items: _vm.brandList,
+                          "item-text": "brandName",
+                          "item-value": "id",
+                        },
+                        model: {
+                          value: _vm.brandCB,
+                          callback: function ($$v) {
+                            _vm.brandCB = $$v
+                          },
+                          expression: "brandCB",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                [
+                  _c("v-col", { attrs: { cols: "12", sm: "4", md: "6" } }, [
+                    _vm.saveBtn
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            on: {
+                              click: function ($event) {
+                                return _vm.saveProduct()
+                              },
+                            },
+                          },
+                          [_vm._v("Save")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        on: {
+                          click: function ($event) {
+                            return _vm.editProduct()
+                          },
+                        },
+                      },
+                      [_vm._v("Edit")]
+                    ),
+                  ]),
                   _vm._v(" "),
-                  _c("v-col", { attrs: { cols: "12", sm: "6", md: "2" } }),
-                  _vm._v(" "),
-                  _c("v-col", { attrs: { cols: "12", sm: "4", md: "3" } }, [
+                  _c("v-col", { attrs: { cols: "12", sm: "4", md: "6" } }, [
                     _c(
                       "button",
                       {
@@ -29860,13 +29895,7 @@ var render = function () {
                       },
                       [_vm._v("Save")]
                     ),
-                    _vm._v(" "),
-                    _c("button", { staticClass: "btn btn-success" }, [
-                      _vm._v("Edit"),
-                    ]),
                   ]),
-                  _vm._v(" "),
-                  _c("v-row"),
                 ],
                 1
               ),
@@ -30121,6 +30150,7 @@ var render = function () {
                           VproductName: _vm.productname,
                           VbrandCB: _vm.brandCB,
                           Vquantity: _vm.quantity,
+                          Vsbtn: _vm.saveBtn,
                         },
                       }),
                     ],
@@ -30144,7 +30174,7 @@ var render = function () {
                     attrs: {
                       headers: _vm.headers,
                       items: _vm.handler,
-                      "items-per-page": 5,
+                      "items-per-page": 10,
                       "hide-default-footer": true,
                     },
                     scopedSlots: _vm._u(

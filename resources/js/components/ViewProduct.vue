@@ -9,7 +9,7 @@
       </div>
       <v-container v-if="createDiv">
         <v-row v-if="userRole == 1">
-        <pharagraph-component :Vid="id" :VproductName="productname" :VbrandCB="brandCB" :Vquantity="quantity"></pharagraph-component>
+        <pharagraph-component :Vid="id" :VproductName="productname" :VbrandCB="brandCB" :Vquantity="quantity" :Vsbtn="saveBtn"></pharagraph-component>
         </v-row>
       </v-container>
      <v-container v-if="productDiv">
@@ -17,7 +17,7 @@
         <v-data-table
             :headers="headers"
             :items="handler"
-            :items-per-page="5"
+            :items-per-page="10"
             :hide-default-footer="true"
             class="elevation-1"
         >
@@ -111,7 +111,7 @@
     </v-app>
 </template>
 
-
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
 <script>
   export default {
@@ -137,15 +137,20 @@
         brandCB:'',
         userRole:'',
         userName:'',
+        itemHandler: [],
 
         modalProductName:'',
         modalProductQuantity:'',
         modalBrandName:'',
 
+        saveBtn:true,
+        editBtn:true,
+        checking:false,
         showModal:false,
         createDiv:false,
         productDiv:false,
         purchaseDiv:false
+
     
         
       }
@@ -155,7 +160,6 @@
     mounted () {
       
         this.viewAllProduct();
-        
     },
 
     methods: {
@@ -169,12 +173,13 @@
 
         editDetails(resp) {
   
+          this.itemHandler = resp
           this.id = resp.id
           this.productname = resp.name
           this.quantity = resp.quantity
           this.brandCB = resp.brand_id
-
-          
+          this.saveBtn = false;
+ 
         },
 
         deleteItem(resp) {
@@ -194,11 +199,12 @@
         },
 
         showDialog(val){
+
              this.showModal = val;
-        
         },
 
         showCreate() {
+          this.editBtn = false;
           this.createDiv = true;
           this.productDiv = false;
           this.purchaseDiv = false;
@@ -208,6 +214,7 @@
           this.productDiv = true;
           this.createDiv = false;
           this.purchaseDiv = false;
+          this.viewAllProduct();
         },
 
         showPurchase() {
