@@ -3,14 +3,27 @@
     <v-form>
       <v-container>
         <v-row>
-            <h1>Product Name</h1>
-            <v-col cols="12" sm="6" md="2">
+            <v-row>
+                <v-col cols="12" sm="6" md="6"><h1>Create Product</h1></v-col>
+                <v-col cols="12" sm="6" md="6"><h1>Create Brand</h1></v-col>
+            </v-row>
+            <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="productName" label="Product Name" placeholder="Product Name" solo></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="2">
+            <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="brandName" label="Brand Name" placeholder="Brand Name" solo></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="quantity" label="Quantity" placeholder="Quantity" solo></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="2">
+            <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="brandDetails" label="Brand Details" placeholder="Brand Details" solo></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" sm="6" md="6">
                  <v-select
                  v-model="brandCB"
                  :items="brandList"
@@ -18,45 +31,31 @@
                  item-value="id"
                  ></v-select>
             </v-col>
-            <v-col cols="12" sm="4" md="4">
-                <button @click="saveProduct()" class="btn btn-primary">Save</button>
+        </v-row>
+        <v-row>
+            <v-col cols="12" sm="4" md="6">
+                <button v-if="saveBtn" @click="saveProduct()" class="btn btn-primary">Save</button>
                 <button @click="editProduct()" class="btn btn-success">Edit</button>
             </v-col>
-            <v-row>       
-            </v-row>
+            <v-col cols="12" sm="4" md="6">
+                <button @click="saveProductDetails()" class="btn btn-primary">Save</button>
+            </v-col>        
         </v-row>
         </v-container>
-      <v-container>
-        <v-row>
-            <h1>Product Details</h1>
-            <v-col cols="12" sm="6" md="3">
-                <v-text-field v-model="brandName" label="Brand Name" placeholder="Brand Name" solo></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-                <v-text-field v-model="brandDetails" label="Brand Details" placeholder="Brand Details" solo></v-text-field>
-            </v-col>   
-            <v-col cols="12" sm="6" md="2">
-                
-            </v-col>
-            <v-col cols="12" sm="4" md="3">
-                <button @click="saveProductDetails()" class="btn btn-primary">Save</button>
-                <button  class="btn btn-success">Edit</button>
-            </v-col>
-            <v-row>       
-            </v-row>
-        </v-row>     
-      </v-container>
     </v-form>
   </v-app>
 </template>
 
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script>
 export default {
     props:[
         'Vid',
         'VproductName',
         'VbrandCB',
-        'Vquantity'
+        'Vquantity',
+        'Vsbtn',
+        'Vebtn'
     ],
     data() {
         
@@ -72,14 +71,20 @@ export default {
             brandCB: '',
             brandList: [],
 
+            saveBtn:true,
+
 
         }
     },
     mounted() {
-        console.log("pogi ako.");
-        console.log(this.createDiv);
-        this.showBrandNames();
         
+        this.showBrandNames();
+        this.id = this.Vid;
+        this.productName = this.VproductName;
+        this.brandCB = this.VbrandCB;
+        this.quantity = this.Vquantity;
+        this.saveBtn = this.Vsbtn;
+    
     },
 
     methods: {
@@ -109,6 +114,10 @@ export default {
                     quantity    : this.quantity
             }).then(response =>{
                 alert(response.data);
+                this.saveBtn = true;
+                this.productName = '';
+                this.quantity = '';
+                this.brandCB = 0;
             })
             
         },
@@ -131,7 +140,13 @@ export default {
         },
         Vquantity(val){
             this.quantity = val;
-        }
+        },
+        Vsbtn(val){
+            this.saveBtn = val;
+        },
+        Vebtn(val){
+            this.editBtn = val;
+        },
     }
 };
 </script>

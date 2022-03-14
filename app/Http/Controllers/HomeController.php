@@ -36,6 +36,7 @@ class HomeController extends Controller
         $product = DB::table('products')
                     ->join('product_details', 'products.brand_id', '=', 'product_details.id')
                     ->select('products.*', 'product_details.brandName')
+                    ->where('products.quantity', '>=', '0')
                     ->get();
 
         
@@ -54,7 +55,7 @@ class HomeController extends Controller
                     ->join('products', 'products.id', '=', 'purchase_orders.product_id')
                     ->join('product_details', 'product_details.id', '=', 'products.brand_id')
                     ->select('purchase_orders.*', 'products.name', 'product_details.brandName', 'products.quantity')
-                    ->where('purchase_orders.status', '=', '0')
+                    ->where('purchase_orders.status', '=', '0', 'and', 'products.quantity', '>', 0)
                     ->get();
 
         return $purchase;
@@ -95,17 +96,22 @@ class HomeController extends Controller
 
     public function edit(Request $request)
     {
-        $product = product::find($request['id']);
 
         \Log::info($request);
+        if($request['id'] == null){
+            return 'Select item first to Edit';
+        }
+        else {
+            $product = product::find($request['id']);
 
-        $product->name = $request['prodName'];
-        $product->brand_id = $request['brandId'];
-        $product->quantity = $request['quantity'];
+            $product->name = $request['prodName'];
+            $product->brand_id = $request['brandId'];
+            $product->quantity = $request['quantity'];
 
-        $product->save();
+            $product->save();
 
-        return 'Product Updated';
+            return 'Product Updated';
+        }
     }
 
     public function deleteItem(Request $request)
@@ -118,8 +124,14 @@ class HomeController extends Controller
     public function savePurchaseOrder(Request $request)
     {
         $po = new PurchaseOrder();
-
+        $product = Product::find($request['product_id']);
         \Log::info($request);
+
+        if ($request['quantity_order'] > $product->quantity) {
+
+            return 'Quantity order is more than available stock';
+        }
+        else {
 
         $po->product_id = $request['product_id'];
         $po->quantity_order = $request['quantity_order'];
@@ -129,24 +141,36 @@ class HomeController extends Controller
         $po->save();
 
         return 'Purchase Order Created';
+        }
     }
 
     public function approvePurchaseOrder(Request $request)
     {
-        \Log::info($request);
 
         $product = Product::find($request['product_id']);
         $purchaseOrder = PurchaseOrder::find($request['purchase_id']);
 
-        $product->quantity = $product->quantity - $request['quantity_order'];
+        if ($request['quantity_order'] > $product->quantity) {
 
-        $product->save();
+            return 'Insufficient quantity';
 
-        $purchaseOrder->status = 1;
+        }
+        else {
 
-        $purchaseOrder->save();
+            $product->quantity = $product->quantity - $request['quantity_order'];
 
-        return 'Purchase Order Approved';
+            $product->save();
+    
+            $purchaseOrder->status = 1;
+    
+            $purchaseOrder->save();
+    
+            return 'Purchase Order Approved';
+
+        }
+
+            
+
 
     }
   
