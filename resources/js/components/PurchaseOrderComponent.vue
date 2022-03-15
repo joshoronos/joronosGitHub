@@ -1,11 +1,23 @@
 <template>
     <v-app>
-      <v-row>
+      <v-card>
+        <v-card-title>
+          Products
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
         <v-data-table
             :headers="headers"
             :items="handler"
-            :items-per-page="5"
+            :items-per-page="10"
             :hide-default-footer="true"
+            :search="search"
             class="elevation-1"
         >
           <template v-slot:[`item.action`]="{ item }">
@@ -14,7 +26,7 @@
             </v-btn>       
           </template>
         </v-data-table>
-      </v-row>
+      </v-card>
 
     <v-row justify="center">
       <v-dialog
@@ -134,6 +146,7 @@
   export default {
     data () {
       return {
+        search: '',
         headers: [
           {
             text: 'Product Name',

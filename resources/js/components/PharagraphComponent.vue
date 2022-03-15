@@ -100,6 +100,9 @@ export default {
                 quantity    :this.quantity
             }).then(response => {
                 alert(response.data);
+                this.productName = ''
+                this.brandCB = ''
+                this.quantity = ''
             })
         },
 

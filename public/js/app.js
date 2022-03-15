@@ -5581,16 +5581,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     saveProduct: function saveProduct() {
+      var _this = this;
+
       axios.post("/saveProduct", {
         productName: this.productName,
         brandID: this.brandCB,
         quantity: this.quantity
       }).then(function (response) {
         alert(response.data);
+        _this.productName = '';
+        _this.brandCB = '';
+        _this.quantity = '';
       });
     },
     saveProductDetails: function saveProductDetails() {
-      var _this = this;
+      var _this2 = this;
 
       axios.post("/saveProductDetails", {
         brandName: this.brandName,
@@ -5598,15 +5603,15 @@ __webpack_require__.r(__webpack_exports__);
         brandPrice: this.brandPrice
       }).then(function (response) {
         alert(response.data);
-        _this.brandName = '';
-        _this.brandDetails = '';
-        _this.brandPrice = '';
+        _this2.brandName = '';
+        _this2.brandDetails = '';
+        _this2.brandPrice = '';
 
-        _this.showBrandNames();
+        _this2.showBrandNames();
       });
     },
     editProduct: function editProduct() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.post("/editProduct", {
         id: this.id,
@@ -5615,17 +5620,17 @@ __webpack_require__.r(__webpack_exports__);
         quantity: this.quantity
       }).then(function (response) {
         alert(response.data);
-        _this2.saveBtn = true;
-        _this2.productName = '';
-        _this2.quantity = '';
-        _this2.brandCB = 0;
+        _this3.saveBtn = true;
+        _this3.productName = '';
+        _this3.quantity = '';
+        _this3.brandCB = 0;
       });
     },
     showBrandNames: function showBrandNames() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/getBrandDetails").then(function (response) {
-        _this3.brandList = response.data;
+        _this4.brandList = response.data;
       });
     }
   },
@@ -5796,9 +5801,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      search: '',
       headers: [{
         text: 'Product Name',
         align: 'start',
@@ -30254,15 +30272,41 @@ var render = function () {
     "v-app",
     [
       _c(
-        "v-row",
+        "v-card",
         [
+          _c(
+            "v-card-title",
+            [
+              _vm._v("\n        Products\n        "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  "append-icon": "mdi-magnify",
+                  label: "Search",
+                  "single-line": "",
+                  "hide-details": "",
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function ($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search",
+                },
+              }),
+            ],
+            1
+          ),
+          _vm._v(" "),
           _c("v-data-table", {
             staticClass: "elevation-1",
             attrs: {
               headers: _vm.headers,
               items: _vm.handler,
-              "items-per-page": 5,
+              "items-per-page": 10,
               "hide-default-footer": true,
+              search: _vm.search,
             },
             scopedSlots: _vm._u(
               [
