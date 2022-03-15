@@ -31,6 +31,9 @@
                     item-value="id"
                     ></v-select>
                 </v-col>
+                <v-col cols="12" sm="6" md="6">
+                    <v-text-field v-model="brandPrice" label="Brand Price" placeholder="Brand Price per Item" solo></v-text-field>
+                </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" sm="4" md="6">
@@ -68,6 +71,8 @@ export default {
             brandName:'',
             brandDetails:'',
 
+            brandPrice:'',
+
             brandCB: '',
             brandList: [],
 
@@ -100,10 +105,15 @@ export default {
 
         saveProductDetails(){
             axios.post("/saveProductDetails",{
-                brandName :this.brandName,
-                brandDetails :this.brandDetails
+                brandName    :this.brandName,
+                brandDetails :this.brandDetails,
+                brandPrice   :this.brandPrice
             }).then(response => {
                 alert(response.data);
+                this.brandName = ''
+                this.brandDetails = ''
+                this.brandPrice = ''
+                this.showBrandNames();
             })
 
         },
