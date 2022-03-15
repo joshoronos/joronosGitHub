@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\PurchaseApprove;
 use App\Models\PurchaseOrder;
 use App\Models\ProductDetails;
 use Illuminate\Support\Facades\DB;
@@ -52,11 +53,13 @@ class HomeController extends Controller
         $purchase = DB::table('purchase_orders')
                     ->join('products', 'products.id', '=', 'purchase_orders.product_id')
                     ->join('product_details', 'product_details.id', '=', 'products.brand_id')
-                    ->select('purchase_orders.*', 'products.name', 'product_details.brandName', 'products.quantity')
+                    ->select('purchase_orders.*', 'products.name', 'product_details.brandName', 'products.quantity', 'product_details.price', 'product_details.id as brand_id')
                     ->where('purchase_orders.status', '=', '0', 'and', 'products.quantity', '>', 0)
                     ->get();
 
-        return $purchase;
+        return response()->json([
+            'product' => $purchase,
+        ]);
         
     }
 
@@ -86,6 +89,7 @@ class HomeController extends Controller
         $brand = new ProductDetails();
         $brand->brandName = $request['brandName'];
         $brand->details = $request['brandDetails'];
+        $brand->price = $request['brandPrice'];
 
         $brand->save();
 
@@ -145,6 +149,7 @@ class HomeController extends Controller
 
         $product = Product::find($request['product_id']);
         $purchaseOrder = PurchaseOrder::find($request['purchase_id']);
+        $poApprove = new PurchaseApprove();
 
         if ($request['quantity_order'] > $product->quantity) {
 
@@ -153,20 +158,24 @@ class HomeController extends Controller
         }
         else {
 
+            $totalPrice = $request['quantity_order'] * $request['brandPrice'];
+
             $product->quantity = $product->quantity - $request['quantity_order'];
 
-            $product->save();
-    
             $purchaseOrder->status = 1;
-    
+ 
+            $poApprove->product_id = $request['product_id'];
+            
+            $poApprove->brand_id = $request['brand_id'];
+
+            $poApprove->total_price = $totalPrice;
+
+            $poApprove->save();
+            $product->save();
             $purchaseOrder->save();
     
             return 'Purchase Order Approved';
-
         }
-
-            
-
 
     }
   
