@@ -3,30 +3,46 @@
 
       <div class="container">
         <div class="w3-bar w3-border w3-light-grey">
-          <a href="#" v-if="userRole == 1" v-on:click="showCreate()" class="w3-bar-item w3-button w3-hover-green">Create Brand</a>
-          <a href="#" v-on:click="showProduct()" class="w3-bar-item w3-button w3-hover-green">Product</a>
+          <a href="#" v-if="userRole == 1" v-on:click="showCreate()" class="w3-bar-item w3-button w3-hover-green">Brand</a>
+          <a href="#" v-on:click="showProduct(); showBrandNames()" class="w3-bar-item w3-button w3-hover-green">Product</a>
           <a href="#" v-if="userRole == 1" v-on:click="showPurchase()"  class="w3-bar-item w3-button w3-hover-green">Purchase Order</a>
+          <a href="#" v-if="userRole == 1" v-on:click="showPurchaseApprove()"  class="w3-bar-item w3-button w3-hover-green">Purchase Approve</a>
+          <a href="#" v-if="userRole == 4" v-on:click="nextPage()"  class="w3-bar-item w3-button w3-hover-green">Next Page</a>
         </div>
       </div>
 
       <v-container v-if="createDiv">
         <v-row v-if="userRole == 1">
-          <pharagraph-component :Vid="id" :VproductName="productname" :VbrandCB="brandCB" :Vquantity="quantity" :Vsbtn="saveBtn"></pharagraph-component>
+          <brand-component :Vid="id" :VproductName="productname" :VbrandCB="brandCB" :Vquantity="quantity" :Vsbtn="saveBtn"></brand-component>
+        </v-row>
+      </v-container>
+
+      <v-container v-if="purchaseApproveDiv">
+        <v-row v-if="userRole == 1">
+          <purchaseApprove-component></purchaseApprove-component>
         </v-row>
       </v-container>
 
     <v-container v-if="productDiv">
       <v-card>
         <v-card-title>
-            Products
+        <v-btn @click="modalCreate=true; brandCB=0;" v-if="userRole == 1"
+        color="success"
+        dark
+        >
+        <v-icon left>
+          fa fa-plus-square
+        </v-icon>
+          ADD PRODUCT
+        </v-btn>
           <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="fa fa-search"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
+          <v-text-field
+            v-model="search"
+            append-icon="fa fa-search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
         </v-card-title>
           <v-data-table
               :headers="headers"
@@ -38,12 +54,12 @@
           <template v-slot:[`item.action`]="{ item }">
               <v-item-group v-if="userRole == 2">
                 <v-btn icon color="success">
-                  <v-icon small @click="showDialog(true); getDetails(item)" color="success" class="btn btn-xsmall">fa fa-cart-plus</v-icon>
+                  <v-icon small @click="showDialog(true); getDetails(item)" color="success">fas fa-cart-plus</v-icon>
                 </v-btn>
               </v-item-group>           
               <v-item-group v-if="userRole == 1">
-                <v-btn icon color="success">
-                  <v-icon small @click="modalCreate=true; brandCB=0;" class="btn btn-xsmall">fa fa-plus-square</v-icon>
+                <v-btn icon>
+                  <v-icon small  @click="viewDetails(item); viewDialog=true" class="btn btn-xsmall">fa-solid fa-eye</v-icon>
                 </v-btn>
                 <v-btn icon class="grey lighten-4 mx-0" color="primary">
                   <v-icon small @click="editDetails(item); modalEdit=true" class="btn btn-xsmall mx-1">fas fa-edit</v-icon>
@@ -74,11 +90,8 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
+
+              <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   label="Product Name"
                   v-model="modalProductName"
@@ -86,11 +99,8 @@
                   solo
                 ></v-text-field>
               </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
+
+              <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   label="Brand Name"
                   v-model="modalBrandName"
@@ -98,19 +108,18 @@
                   solo
                 ></v-text-field>
               </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
+
+              <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   label="Input Quantity on Purchase"
                   v-model="modalProductQuantity"
                 ></v-text-field>
               </v-col>
+
             </v-row>
           </v-container>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -144,12 +153,9 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+
             <v-row>
-              <v-col
-                cols="12"
-                sm="6"
-                md="12"
-              >
+              <v-col cols="12" sm="6" md="12">
                 <v-text-field
                   v-model="productName"
                   label="Product Name"
@@ -157,12 +163,9 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+
             <v-row>
-              <v-col
-                cols="12"
-                sm="6"
-                md="12"
-              >
+              <v-col cols="12" sm="6" md="12">
                 <v-text-field
                   v-model="quantity"
                   label="Quantity"
@@ -170,6 +173,7 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+
             <v-row>
               <v-col cols="12" sm="6" md="12">
                   <v-select
@@ -180,8 +184,10 @@
                   ></v-select>
               </v-col>
             </v-row>
+
           </v-container>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -270,38 +276,141 @@
     </v-dialog>
   </v-row>
 
-  <v-row justify="center">
-    <v-dialog
-      v-model="modalDelete"
-      max-width="470"
-    >
-      <v-card>
-        <v-card-title class="text-h5">
-          Are you sure you want to delete this item?
-        </v-card-title>
+    <v-row justify="center">
+      <v-dialog
+        v-model="modalDelete"
+        max-width="470"
+      >
+        <v-card>
+          <v-card-title class="text-h5">
+            Are you sure you want to delete this item?
+          </v-card-title>
 
-        <v-card-actions>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn
+              color="error"
+              text
+              @click="modalDelete=false"
+            >
+              Disagree
+            </v-btn>
+
+            <v-btn
+              color="success"
+              text
+              @click="deleteItem(); modalDelete=false"
+            >
+              Agree
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
+
+    <v-row justify="center">
+      <v-dialog
+          v-model="viewDialog"
+         
+        
+      >
+        <v-card>
+          <v-card-title>
+            <span class="text-h8"><v-icon>fas fa-info-circle</v-icon> Information
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+
+                <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                v-model="viewModelProduct"
+                label="Product Name"
+                readonly
+                ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    label="Brand Name"
+                    v-model="viewModelBrandName"
+                    readonly
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    label="Details"
+                    v-model="viewModelDetails"
+                    readonly
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    label="Quantity"
+                    v-model="viewModelQty"
+                    readonly
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    label="Price"
+                    v-model="viewModelPrice"
+                    readonly
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-spacer></v-spacer>
+
+            <v-card>
+        <v-card-title>
+          Purchase Order
           <v-spacer></v-spacer>
-
-          <v-btn
-            color="error"
-            text
-            @click="modalDelete=false"
+          <v-text-field
+            v-model="purchaseSearch"
+            append-icon="fa fa-search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+          <v-data-table
+              :headers="purchaseHeaders"
+              :items="purchaseOrderHandler"
+              :items-per-page="10"
+              :search="purchaseSearch"
+              class="elevation-1"
           >
-            Disagree
-          </v-btn>
-
-          <v-btn
-            color="success"
-            text
-            @click="deleteItem(); modalDelete=false"
-          >
-            Agree
-          </v-btn>
-        </v-card-actions>
+          <template v-slot:[`item.status`]>
+            <v-btn color="error" rounded>
+                Pending
+            </v-btn>
+          </template>
+          </v-data-table>
       </v-card>
-    </v-dialog>
-  </v-row>
+
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="viewDialog=false">
+              Close
+            </v-btn>
+
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
 
     </v-app>
 </template>
@@ -322,8 +431,25 @@
           },
           { text: 'Brand Name', value: 'brandName', sortable: false },
           { text: 'Quantity', value: 'quantity', sortable: false},
-          { text: 'Action', value: 'action', sortable: false}
+          { text: 'Action', value: 'action', sortable: false},
+
         ],
+
+        purchaseSearch:'',
+        purchaseHeaders: [
+          {
+            text: 'PO Reference Number',
+            align: 'start',
+            sortable: false,
+            value: 'po_reference_no',
+          },
+          { text: 'Quantity Ordered', value: 'quantity_order', sortable: false },
+          { text: 'Date Purchase', value: 'date_purchase', sortable: false},
+          { text: 'Person Created', value: 'username', sortable: false},
+          { text: 'PO Status', value: 'status', sortable: false},
+
+        ],
+
         handler: [],
         id:'',
         brandName:'',
@@ -353,6 +479,16 @@
         createDiv:false,
         productDiv:false,
         purchaseDiv:false,
+        purchaseApproveDiv:false,
+        viewDialog:false,
+
+        viewModelProduct:'',
+        viewModelBrandName:'',
+        viewModelDetails:'',
+        viewModelQty:'',
+        viewModelPrice:'',
+
+        purchaseOrderHandler:[],
 
         brandCB: '',
         brandList: [],
@@ -373,23 +509,38 @@
                 this.handler = response.data.product;
                 this.userRole = response.data.userType;
                 this.userName = response.data.username;
+                // this.handler.forEach(e=>{
+                //   e.input = 'kajsdoasidjo'
+                // })
             });
         },
 
         editDetails(resp) {
-  
+          console.log(resp)
           this.itemHandler = resp
           this.id = resp.id
           this.editProductName = resp.name
           this.editQuantity = resp.quantity
           this.brandCB = resp.brand_id
- 
+        },
+
+        viewDetails(resp) {
+            axios.post("/viewProductInfo",{
+                    id          : resp.id,
+            }).then(response =>{
+                this.purchaseOrderHandler = response.data.productPurchase
+                this.viewModelProduct = response.data.product[0].name
+                this.viewModelBrandName = response.data.product[0].brandName
+                this.viewModelDetails = response.data.product[0].details
+                this.viewModelQty = response.data.product[0].quantity
+                this.viewModelPrice = response.data.product[0].price
+            })  
         },
 
         getDataToDelete(item){
           
           this.deleteId = item.id
-      
+          
         },
 
         saveProduct(){
@@ -445,7 +596,6 @@
         },
 
         showDialog(val){
-
              this.showModal = val;
         },
 
@@ -454,12 +604,14 @@
           this.createDiv = true;
           this.productDiv = false;
           this.purchaseDiv = false;
+          this.purchaseApproveDiv = false;
         },
 
         showProduct() {
           this.productDiv = true;
           this.createDiv = false;
           this.purchaseDiv = false;
+          this.purchaseApproveDiv = false;
           this.viewAllProduct();
         },
 
@@ -467,6 +619,14 @@
           this.purchaseDiv = true;
           this.createDiv = false;
           this.productDiv = false;
+          this.purchaseApproveDiv = false;
+        },
+
+        showPurchaseApprove() {
+          this.purchaseDiv = true;
+          this.createDiv = false;
+          this.productDiv = false;
+          this.purchaseApproveDiv = true;
         },
 
         savePurchaseOrder(){
@@ -479,6 +639,10 @@
                 alert(response.data);
             })
         },
+
+        nextPage(){
+            location.assign('/page2');
+        }
     }
   }
 </script>

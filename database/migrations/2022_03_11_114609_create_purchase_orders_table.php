@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('po_reference_no');
             $table->integer('product_id');
             $table->integer('quantity_order');
             $table->string('username');
             $table->integer('status');
+            $table->string('date_purchase');
             $table->timestamps();
         });
     }

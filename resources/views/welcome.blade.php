@@ -9,6 +9,9 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.2.18/dist/vuetify.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet"/>
+
 
     <!-- Styles -->
     <style>
@@ -404,14 +407,8 @@
             font-family: 'Nunito', sans-serif;
         }
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-
-
-
     </style>
 </head>
-
-<div id="app"><example-component></example-component></div>
-        <script src="{{asset('js/app.js')}}"></script>
 
 <body class="antialiased">
     <div
@@ -432,6 +429,8 @@
         @endif
     </div>
     </div>
+
+    <!-- <div id="app"><example-component></example-component></div> -->
 
 </body>
 
