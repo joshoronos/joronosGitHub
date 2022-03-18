@@ -25,8 +25,8 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('dashboard-component', require('./components/DividerComponent.vue').default);
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('pharagraph-component', require('./components/PharagraphComponent.vue').default);
+Vue.component('purchaseApprove-component', require('./components/PurchaseApprove.vue').default);
+Vue.component('brand-component', require('./components/BrandComponent.vue').default);
 Vue.component('view-component', require('./components/ViewProduct.vue').default);
 Vue.component('purchaseOrder-component', require('./components/PurchaseOrderComponent.vue').default);
 
@@ -35,8 +35,6 @@ Vue.component('purchaseOrder-component', require('./components/PurchaseOrderComp
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-
 
 const app = new Vue({
     vuetify: vuetify,
