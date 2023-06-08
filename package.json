@@ -34,6 +34,6 @@
         "vue-laravel-sidebar": "^1.0.1",
         "vue-router": "^4.0.13",
         "vuetify": "^2.6.4",
-        "vuetify-loader": "^1.7.3"
+        "vuetify-loader": "^1.9.2"
     }
 }
