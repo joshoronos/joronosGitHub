@@ -32,7 +32,7 @@
         "popper.js": "^1.16.1",
         "vue-axios": "^3.4.1",
         "vue-laravel-sidebar": "^1.0.1",
-        "vue-router": "^4.0.13",
+        "vue-router": "^4.2.1",
         "vuetify": "^2.6.4",
         "vuetify-loader": "^1.7.3"
     }
